@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html ng-app="todoApp">
 	<head>
+		<meta charset="utf8" />
 		<title>Para fazer a lista</title>
 		<link href="bootstrap.css" rel="stylesheet" />
 		<link href="bootstrap-theme.css" rel="stylesheet" />
+		<link href="bootstrapValidator.css" />
+
+		<script src="jquery-1.11.1.js"></script>
+		<script src="bootstrap.js"></script>
+		<script src="bootstrapValidator.js"></script>
+		<script src="language/pt_BR.js"></script>
 		<script src="angular.js"></script>
 		<script>
 
@@ -20,6 +27,13 @@
 				$scope.todo = model;
 			});
 		</script>
+		<script>
+			$(document).ready(function() {
+				$("#profileForm").bootstrapValidator({
+					group: '.menu'
+				});
+			});
+		</script>
 	</head>	
 	<body ng-controller="ToDoCrtl">
 		<div class="page-header">
@@ -29,12 +43,15 @@
 			</h1>
 		</div>
 		<div class="panel">
-			<div class="input-group">
-				<input class="form-control" />
+			<form id="profileForm">
+				<div class="menu input-group">
+					<label>Nome</label>
+					<input type="text" name="nome" class="form-control" data-bv-notempty="true" data-bv-notempty-message="The first name is required and cannot be empty" />
+				</div>
 				<span class="input-group-btn">
 					<button class="btn btn-default">Adicionar</button>
 				</span>
-			</div>
+			</form>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -45,6 +62,7 @@
 				<tbody>
 					<tr ng-repeat="item in todo.items">
 						<td>{{item.action}}</td>
+						<td><input type="checkbox" ng-model="item.done" /></td>
 						<td>{{item.done}}</td>
 					</tr>
 				</tbody>
