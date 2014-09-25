@@ -1,0 +1,10 @@
+<div class="alert alert-danger" ng-show="data.orderError">
+	Error ({{data.orderError.status}}). A ordem não pode ser colocado.
+	<a href="#/placeorder" class="alert-link">Clique aqui para tentar novamente</a>
+</div>
+
+<div class="well" ng-hide="data.orderError">
+	<h2>Obrigado!</h2>
+	Obrigado por fazer seu pedido. Nós vamos enviar os seus bens o mais rápido possível.
+	Se você precisar entrar em contato conosco, utilize referência {{data.orderId}}
+</div>
