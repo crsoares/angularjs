@@ -41,6 +41,7 @@ angular.module("exampleApp", [])
 		} else {
 			$scope.createProduct(product);
 		}
+		//$scope.displayMode = "list";
 	}
 
 	$scope.cancelEdit = function() {

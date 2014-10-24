@@ -6,6 +6,9 @@
 		<script src="angular.js"></script>
 		<link href="bootstrap.css" rel="stylesheet" />
 		<link href="bootstrap-theme.css" rel="stylesheet" />
+		<style>
+			*.error { color: red; font-weight: bold; }
+		</style>
 		<script type="text/ng-template" id="triTemplate">
 			<div class="well">
 				<div class="btn-group">
@@ -13,6 +16,9 @@
 					<button class="btn btn-default">No</button>
 					<button class="btn btn-default">Not Sure</button>
 				</div>
+				<span class="error" ng-show="myForm.decision.$error.confidence">
+					Você precisa ter certeza de
+				</span>
 			</div>
 		</script>
 		<script>
@@ -27,9 +33,17 @@
 					require: "ngModel",
 					template: document.querySelector("#triTemplate").outerText,
 					link: function (scope, element, attrs, ctrl) {
-						ctrl.$formatters.push(function(value) {
+						/*ctrl.$formatters.push(function(value) {
 							return value == "Huh?" ? "Not Sure" : value;
-						});
+						});*/
+						var validateParser = function(value) {
+							var valid = (value == "Yes" || value == "No");
+							ctrl.$setValidity("confidence", valid);
+							return valid ? value : undefined;
+						}
+
+						ctrl.$parsers.push(validateParser);
+
 						element.on("click", function(event){
 							setSelected(event.target.innerText);
 
@@ -49,6 +63,7 @@
 						//setSelected(scope.dataValue);
 
 						ctrl.$render = function() {
+							validateParser(ctrl.$viewValue);
 							setSelected(ctrl.$viewValue || "Not Sure");
 						}
 					}
@@ -57,7 +72,9 @@
 		</script>
 	</head>
 	<body ng-controller="defaultCtrl">
-		<div><div tri-button ng-model="dataValue" /></div>
+		<form name="myForm" novalidate>
+			<div><div tri-button name="decision" ng-model="dataValue" /></div>
+		</form>
 		<div class="well">
 			Value:
 			<select ng-model="dataValue">
